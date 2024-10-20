@@ -41,7 +41,7 @@ public class User implements UserDetails {
     ROLE role;
 
     @OneToOne
-    Portefeuille portefeuille;
+    Portfeuille portefeuille;
 
     @OneToOne
     Compte compteBancaire;
