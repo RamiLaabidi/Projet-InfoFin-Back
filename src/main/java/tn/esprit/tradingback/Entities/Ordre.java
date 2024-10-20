@@ -50,4 +50,6 @@ public class Ordre implements Serializable {
     @ManyToOne
     Marche marche;
 
+    public void setAction(Action action) {
+    }
 }
