@@ -1,4 +1,4 @@
-package tn.esprit.tradingback.WebSocket;
+/*package tn.esprit.tradingback.WebSocket;
 
 
 import org.springframework.context.annotation.Configuration;
@@ -17,3 +17,4 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         WebSocketMessageBrokerConfigurer.super.configureMessageBroker(registry);
     }
 }
+*/
