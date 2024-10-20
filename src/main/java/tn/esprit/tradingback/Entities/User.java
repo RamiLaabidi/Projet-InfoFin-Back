@@ -44,7 +44,7 @@ public class User implements UserDetails {
     Portefeuille portefeuille;
 
     @OneToOne
-    CompteBancaire compteBancaire;
+    Compte compteBancaire;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy="user")
     private Set<Ordre> ordres;
@@ -85,6 +85,14 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
+
+    //   Compte + portfolio Abdou
+    @OneToOne(mappedBy="utilisateur")
+    private Portfeuille portfeuille;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="utilisateurC")
+    private Set<Compte> comptes;
 
 
 }

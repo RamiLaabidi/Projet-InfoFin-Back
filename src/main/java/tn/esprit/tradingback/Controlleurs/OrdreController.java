@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tn.esprit.tradingback.Entities.NATURE_ORDRE;
+import tn.esprit.tradingback.Entities.Enums.NATURE_ORDRE;
 import tn.esprit.tradingback.Entities.Ordre;
 import tn.esprit.tradingback.Services.OrdreService;
 @RestController

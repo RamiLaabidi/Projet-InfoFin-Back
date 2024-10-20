@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import tn.esprit.tradingback.Entities.*;
+import tn.esprit.tradingback.Entities.Enums.NATURE_ORDRE;
 import tn.esprit.tradingback.Entities.Enums.STATUT_ORDRE;
 import tn.esprit.tradingback.Repositories.ActionRepository;
 import tn.esprit.tradingback.Repositories.OrdreRepository;
@@ -14,8 +15,6 @@ import tn.esprit.tradingback.Repositories.UserRepository;
 import tn.esprit.tradingback.Services.Interfaces.IOrdreService;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Service
 @RequestMapping("/ordre")
