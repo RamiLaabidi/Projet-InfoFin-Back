@@ -85,7 +85,7 @@ public class OrdreService implements IOrdreService {
         portefeuilleRepository.save(portefeuille); // Save the updated wallet
 
         // Match the order with the action
-        ordre.setAction(action); // Set the action for the order
+       // ordre.setAction(action); // Set the action for the order
 
         // Save and return the order
         return ordreRepository.save(ordre);
