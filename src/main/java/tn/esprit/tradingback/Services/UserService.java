@@ -4,11 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
+import tn.esprit.tradingback.DTO.UserUpdateDTO;
 import tn.esprit.tradingback.Entities.Portefeuille;
 import tn.esprit.tradingback.Entities.User;
 import tn.esprit.tradingback.Repositories.PortefeuilleRepository;
 import tn.esprit.tradingback.Repositories.UserRepository;
 import tn.esprit.tradingback.Services.Interfaces.IUserService;
+
+import java.util.Optional;
 
 @Service
 @RequestMapping("/user")
@@ -29,11 +32,18 @@ public class UserService implements IUserService {
         Portefeuille newPortefeuille = portefeuilleRepository.save(portefeuille);
 
         // Assign the portefeuille to the user
-        user.setPortefeuille(newPortefeuille);
+//        user.setPortefeuille(newPortefeuille);
 
         // Save the user with the updated portefeuille
         return userRepository.save(user);
     }
 
 
+    public Optional<User> getUserByEmail(String email) {
+        return null;
+    }
+
+    public User updateUser(Long idU, UserUpdateDTO userUpdateDTO) {
+        return null;
+    }
 }

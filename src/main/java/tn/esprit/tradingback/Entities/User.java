@@ -37,6 +37,11 @@ public class User implements UserDetails {
     String photo;
     String mail;
     String motDePasse;
+    String phone;
+    String location;
+    String description;
+    String age;
+    String profession;
     @Enumerated(EnumType.STRING)
     ROLE role;
 
@@ -86,5 +91,12 @@ public class User implements UserDetails {
         return true;
     }
 
+
+
+//    //   Compte + portfolio Abdou
+//    @OneToOne(mappedBy="utilisateur")
+//    private Portefeuille portfeuille;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy="utilisateurC")
+//    private Set<CompteBancaire> comptes;
 
 }
