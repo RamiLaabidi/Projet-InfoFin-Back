@@ -1,5 +1,7 @@
 package tn.esprit.tradingback.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -49,7 +51,8 @@ public class User implements UserDetails {
     Portefeuille portefeuille;
 
     @OneToOne
-    CompteBancaire compteBancaire;
+    @JsonIgnoreProperties("user") // This prevents serialization of the 'user' in 'compteBancaire'
+    private CompteBancaire compteBancaire;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy="user")
     private Set<Ordre> ordres;
