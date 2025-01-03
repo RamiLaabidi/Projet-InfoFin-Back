@@ -24,7 +24,8 @@ public class CompteBancaire implements Serializable {
     Float numCompte;
     String nomBanque;
     Date dateOuverture;
-    Float soldeCompte;
+    @Column(nullable = false)
+    Float soldeCompte = 1000.0f;
 
     @OneToOne(mappedBy = "compteBancaire")
     @JsonManagedReference // This ensures serialization of 'compteBancaire' in 'User'

@@ -11,7 +11,7 @@ import tn.esprit.tradingback.Entities.User;
 import tn.esprit.tradingback.Services.UserService;
 
 import java.util.Optional;
-@CrossOrigin(origins = "http://localhost:4200") // Le port Angular par défaut
+@CrossOrigin(origins = "*") // Le port Angular par défaut
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
