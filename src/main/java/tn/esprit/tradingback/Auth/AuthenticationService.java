@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,7 +38,6 @@ public class AuthenticationService {
 
   @Autowired
   private CompteBancaireRepository iCompteBancaireRepository;
-
   @Transactional
   public AuthenticationResponse register(RegistreRequest request) {
     // Créer l'entité User (Utilisateur)
@@ -52,8 +52,8 @@ public class AuthenticationService {
             .adress(request.getAdress())
             .codePostal(request.getCodePostal())
             .contact(request.getContact())
-            .motDePasse(passwordEncoder.encode(request.getMotDePasse()))  // Mot de passe crypté
-            .role(ROLE.JOUEUR)  // Rôle par défaut
+            .motDePasse(passwordEncoder.encode(request.getMotDePasse())) // Mot de passe crypté
+            .role(ROLE.JOUEUR) // Rôle par défaut
             .build();
 
     // Sauvegarder l'utilisateur pour générer son ID
@@ -61,11 +61,11 @@ public class AuthenticationService {
 
     // Créer le compte bancaire associé à l'utilisateur
     CompteBancaire compteBancaire = CompteBancaire.builder()
-            .numCompte(request.getNumCompte())  // Numéro de compte saisi par l'utilisateur
-            .nomBanque(request.getNomBanque())  // Nom de la banque saisi par l'utilisateur
-            .dateOuverture(new Date())  // Date actuelle comme date d'ouverture
-            .soldeCompte(1000.0f)  // Solde initial à 1000$
-            .user(user)  // Associer le compte à l'utilisateur
+            .numCompte(request.getNumCompte()) // Numéro de compte saisi par l'utilisateur
+            .nomBanque(request.getNomBanque()) // Nom de la banque saisi par l'utilisateur
+            .dateOuverture(new Date()) // Date actuelle comme date d'ouverture
+            .soldeCompte(1000.0f) // Solde initial à 1000$
+            .user(user) // Associer le compte à l'utilisateur
             .build();
 
     // Sauvegarder le compte bancaire
@@ -73,7 +73,7 @@ public class AuthenticationService {
 
     // Associer le compte bancaire à l'utilisateur
     user.setCompteBancaire(compteBancaire);
-    iUserRepository.save(user);  // Sauvegarder l'utilisateur avec le compte bancaire
+    iUserRepository.save(user); // Sauvegarder l'utilisateur avec le compte bancaire
 
     // Générer un token JWT pour l'utilisateur
     String jwtToken = jwtService.generateToken(user, user.getUsername());
@@ -84,26 +84,47 @@ public class AuthenticationService {
             .build();
   }
 
-
   public AuthenticationResponse login(LoginRequest request) {
-    authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                    request.getMail(),
-                    request.getMotDePasse()
-            )
-    );
-    var user = iUserRepository.findByMail(request.getMail())
-            .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + request.getMail()));
-    Map<String, Object> claims = new HashMap<>();
-    String jwtToken = jwtService.generateToken(user, user.getUsername());
+    // Validate input
+    if (request.getMail() == null || request.getMail().isEmpty()) {
+      throw new IllegalArgumentException("Email must not be empty");
+    }
+    if (request.getMotDePasse() == null || request.getMotDePasse().isEmpty()) {
+      throw new IllegalArgumentException("Password must not be empty");
+    }
 
+    // Authenticate the user
+    try {
+      authenticationManager.authenticate(
+              new UsernamePasswordAuthenticationToken(
+                      request.getMail(),
+                      request.getMotDePasse()
+              )
+      );
+    } catch (Exception e) {
+      throw new BadCredentialsException("Invalid credentials");
+    }
+
+    // Retrieve the user from the repository
+    User user = iUserRepository.findByMail(request.getMail())
+            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+    // Add custom claims for the token
+    Map<String, Object> claims = new HashMap<>();
+    claims.put("role", user.getRole());
+    claims.put("userId", user.getIdU());
+    claims.put("photo", user.getPhoto());
+    claims.put("name", user.getNom() + " " + user.getPrenom());
+
+    // Generate JWT token with claims
+    String jwtToken = jwtService.generateToken(user, user.getUsername());  // Without the claims
+
+
+    // Return the response with the generated access token
     return AuthenticationResponse.builder()
             .accessToken(jwtToken)
             .build();
   }
-
-
-
 
   public void createPasswordResetTokenForUser(User user, String token) {
     PasswordResetToken myToken = new PasswordResetToken(token, user);
@@ -134,4 +155,5 @@ public class AuthenticationService {
 
     tokenRepository.delete(resetToken);
   }
+
 }

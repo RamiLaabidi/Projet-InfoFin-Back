@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import tn.esprit.tradingback.DTO.UserUpdateDTO;
 import tn.esprit.tradingback.Entities.CompteBancaire;
 import tn.esprit.tradingback.Entities.Portefeuille;
@@ -11,6 +12,7 @@ import tn.esprit.tradingback.Entities.User;
 import tn.esprit.tradingback.Repositories.PortefeuilleRepository;
 import tn.esprit.tradingback.Repositories.UserRepository;
 import tn.esprit.tradingback.Services.Interfaces.IUserService;
+
 
 import java.util.Optional;
 
@@ -92,4 +94,13 @@ public class UserService implements IUserService {
         }
         return null;  // or throw an exception if user is not found
     }
+
+
+
+
+
+
+
+    // Fetch all users with their bank accounts and balances
+
 }

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.tradingback.DTO.UserUpdateDTO;
-import tn.esprit.tradingback.Entities.CompteBancaire;
 import tn.esprit.tradingback.Entities.Portefeuille;
 import tn.esprit.tradingback.Entities.User;
 import tn.esprit.tradingback.Services.UserService;
@@ -54,6 +53,11 @@ public class UserController {
         return userOptional.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+
+
+    // Endpoint to get all users with their bank accounts
+
 
 
 }
